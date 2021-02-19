@@ -14,6 +14,9 @@ RUN rm -rf /etc/nginx/sites-enabled/default
 RUN sed -i '/include \/etc\/nginx\/sites-enabled\//a\\tinclude /home/docker/Github-Monitor/docker/nginx-app.conf;' /etc/nginx/nginx.conf
 RUN sed -i 's/\/etc\/supervisor\/conf.d\/\*.conf/\/home\/docker\/Github-Monitor\/docker\/supervisor-app.conf/g' /etc/supervisor/supervisord.conf
 
+COPY server/get-pip.py /get-pip.py
+RUN python3 get-pip.py
+RUN pip3 install setuptools_rust -i http://pypi.doubanio.com/simple --trusted-host pypi.doubanio.com
 # install requirement
 COPY server/requirements.pip /requirement.txt
 RUN pip3 install -r /requirement.txt -i http://pypi.doubanio.com/simple --trusted-host pypi.doubanio.com
